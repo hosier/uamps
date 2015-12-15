@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.5.0 #9253 (Jun 20 2015) (MINGW64)
-; This file was generated Mon Dec 14 11:04:12 2015
+; This file was generated Mon Dec 14 19:07:36 2015
 ;--------------------------------------------------------
 	.module final
 	.optsdcc -mmcs51 --model-small
@@ -404,11 +404,9 @@
 	.globl _TMR0
 	.globl _TH2
 	.globl _TL2
-	.globl _array_length
-	.globl _bit_array
-	.globl _total_bits
+	.globl _card_data
+	.globl _header
 	.globl _bit_val
-	.globl _temp
 	.globl _ready
 	.globl _num_0
 	.globl _max_count
@@ -1236,21 +1234,18 @@ _num_0::
 G$ready$0$0==.
 _ready::
 	.ds 1
-G$temp$0$0==.
-_temp::
-	.ds 1
 G$bit_val$0$0==.
 _bit_val::
 	.ds 1
-G$total_bits$0$0==.
-_total_bits::
-	.ds 1
-G$bit_array$0$0==.
-_bit_array::
+G$header$0$0==.
+_header::
 	.ds 2
-G$array_length$0$0==.
-_array_length::
-	.ds 1
+G$card_data$0$0==.
+_card_data::
+	.ds 4
+Lfinal.main$temp_bits$1$12==.
+_main_temp_bits_1_12:
+	.ds 4
 ;--------------------------------------------------------
 ; overlayable items in internal ram 
 ;--------------------------------------------------------
@@ -1332,9 +1327,17 @@ __interrupt_vect:
 	.globl __mcs51_genXINIT
 	.globl __mcs51_genXRAMCLEAR
 	.globl __mcs51_genRAMCLEAR
-	C$final.c$41$1$24 ==.
-;	C:\MPSfiles\Final\final.c:41: unsigned char temp = 0xA0;
-	mov	_temp,#0xA0
+	C$final.c$45$1$25 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:45: unsigned int header = 0x05;	//hard coded header info
+	mov	_header,#0x05
+	mov	(_header + 1),#0x00
+	C$final.c$46$1$25 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:46: unsigned long card_data = 0xAAAAAAAA; //hard coded card info: **LSB is transmitted first**
+	mov	a,#0xAA
+	mov	_card_data,a
+	mov	(_card_data + 1),a
+	mov	(_card_data + 2),a
+	mov	(_card_data + 3),a
 	.area GSFINAL (CODE)
 	ljmp	__sdcc_program_startup
 ;--------------------------------------------------------
@@ -1354,7 +1357,7 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 	G$Timer_Init$0$0 ==.
 	C$final_config.c$10$0$0 ==.
-;	C:/MPSfiles/Final/final_config.c:10: void Timer_Init()
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:10: void Timer_Init()
 ;	-----------------------------------------
 ;	 function Timer_Init
 ;	-----------------------------------------
@@ -1368,19 +1371,19 @@ _Timer_Init:
 	ar1 = 0x01
 	ar0 = 0x00
 	C$final_config.c$12$1$1 ==.
-;	C:/MPSfiles/Final/final_config.c:12: SFRPAGE   = TMR2_PAGE;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:12: SFRPAGE   = TMR2_PAGE;
 	mov	_SFRPAGE,#0x00
 	C$final_config.c$13$1$1 ==.
-;	C:/MPSfiles/Final/final_config.c:13: TMR2CN    = 0x04;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:13: TMR2CN    = 0x04;
 	mov	_TMR2CN,#0x04
 	C$final_config.c$14$1$1 ==.
-;	C:/MPSfiles/Final/final_config.c:14: TMR2CF    = 0x0A;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:14: TMR2CF    = 0x0A;
 	mov	_TMR2CF,#0x0A
 	C$final_config.c$15$1$1 ==.
-;	C:/MPSfiles/Final/final_config.c:15: RCAP2L    = 0x2C;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:15: RCAP2L    = 0x2C;
 	mov	_RCAP2L,#0x2C
 	C$final_config.c$16$1$1 ==.
-;	C:/MPSfiles/Final/final_config.c:16: RCAP2H    = 0xFC;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:16: RCAP2H    = 0xFC;
 	mov	_RCAP2H,#0xFC
 	C$final_config.c$17$1$1 ==.
 	XG$Timer_Init$0$0 ==.
@@ -1390,25 +1393,25 @@ _Timer_Init:
 ;------------------------------------------------------------
 	G$Port_IO_Init$0$0 ==.
 	C$final_config.c$19$1$1 ==.
-;	C:/MPSfiles/Final/final_config.c:19: void Port_IO_Init()
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:19: void Port_IO_Init()
 ;	-----------------------------------------
 ;	 function Port_IO_Init
 ;	-----------------------------------------
 _Port_IO_Init:
 	C$final_config.c$57$1$2 ==.
-;	C:/MPSfiles/Final/final_config.c:57: SFRPAGE   = CONFIG_PAGE;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:57: SFRPAGE   = CONFIG_PAGE;
 	mov	_SFRPAGE,#0x0F
 	C$final_config.c$58$1$2 ==.
-;	C:/MPSfiles/Final/final_config.c:58: P0MDOUT   = 0xFF;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:58: P0MDOUT   = 0xFF;
 	mov	_P0MDOUT,#0xFF
 	C$final_config.c$59$1$2 ==.
-;	C:/MPSfiles/Final/final_config.c:59: P1MDOUT   = 0xFF;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:59: P1MDOUT   = 0xFF;
 	mov	_P1MDOUT,#0xFF
 	C$final_config.c$60$1$2 ==.
-;	C:/MPSfiles/Final/final_config.c:60: XBR1      = 0x20;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:60: XBR1      = 0x20;
 	mov	_XBR1,#0x20
 	C$final_config.c$61$1$2 ==.
-;	C:/MPSfiles/Final/final_config.c:61: XBR2      = 0x40;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:61: XBR2      = 0x40;
 	mov	_XBR2,#0x40
 	C$final_config.c$62$1$2 ==.
 	XG$Port_IO_Init$0$0 ==.
@@ -1418,16 +1421,16 @@ _Port_IO_Init:
 ;------------------------------------------------------------
 	G$Oscillator_Init$0$0 ==.
 	C$final_config.c$64$1$2 ==.
-;	C:/MPSfiles/Final/final_config.c:64: void Oscillator_Init()
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:64: void Oscillator_Init()
 ;	-----------------------------------------
 ;	 function Oscillator_Init
 ;	-----------------------------------------
 _Oscillator_Init:
 	C$final_config.c$66$1$3 ==.
-;	C:/MPSfiles/Final/final_config.c:66: SFRPAGE   = CONFIG_PAGE;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:66: SFRPAGE   = CONFIG_PAGE;
 	mov	_SFRPAGE,#0x0F
 	C$final_config.c$67$1$3 ==.
-;	C:/MPSfiles/Final/final_config.c:67: OSCICN    = 0x83;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:67: OSCICN    = 0x83;
 	mov	_OSCICN,#0x83
 	C$final_config.c$68$1$3 ==.
 	XG$Oscillator_Init$0$0 ==.
@@ -1437,13 +1440,13 @@ _Oscillator_Init:
 ;------------------------------------------------------------
 	G$Interrupts_Init$0$0 ==.
 	C$final_config.c$70$1$3 ==.
-;	C:/MPSfiles/Final/final_config.c:70: void Interrupts_Init()
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:70: void Interrupts_Init()
 ;	-----------------------------------------
 ;	 function Interrupts_Init
 ;	-----------------------------------------
 _Interrupts_Init:
 	C$final_config.c$72$1$4 ==.
-;	C:/MPSfiles/Final/final_config.c:72: IE        = 0xA0;
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:72: IE        = 0xA0;
 	mov	_IE,#0xA0
 	C$final_config.c$73$1$4 ==.
 	XG$Interrupts_Init$0$0 ==.
@@ -1453,22 +1456,22 @@ _Interrupts_Init:
 ;------------------------------------------------------------
 	G$Init_Device$0$0 ==.
 	C$final_config.c$77$1$4 ==.
-;	C:/MPSfiles/Final/final_config.c:77: void Init_Device(void)
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:77: void Init_Device(void)
 ;	-----------------------------------------
 ;	 function Init_Device
 ;	-----------------------------------------
 _Init_Device:
 	C$final_config.c$79$1$6 ==.
-;	C:/MPSfiles/Final/final_config.c:79: Timer_Init();
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:79: Timer_Init();
 	lcall	_Timer_Init
 	C$final_config.c$80$1$6 ==.
-;	C:/MPSfiles/Final/final_config.c:80: Port_IO_Init();
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:80: Port_IO_Init();
 	lcall	_Port_IO_Init
 	C$final_config.c$81$1$6 ==.
-;	C:/MPSfiles/Final/final_config.c:81: Oscillator_Init();
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:81: Oscillator_Init();
 	lcall	_Oscillator_Init
 	C$final_config.c$82$1$6 ==.
-;	C:/MPSfiles/Final/final_config.c:82: Interrupts_Init();
+;	C:/Users/Michael/Documents/GitHub/uamps/Firmware/final_config.c:82: Interrupts_Init();
 	lcall	_Interrupts_Init
 	C$final_config.c$83$1$6 ==.
 	XG$Init_Device$0$0 ==.
@@ -1476,157 +1479,207 @@ _Init_Device:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;i                         Allocated to registers r6 r7 
-;j                         Allocated with name '_main_j_2_13'
+;temp_bits                 Allocated with name '_main_temp_bits_1_12'
+;i                         Allocated to registers r2 r3 
 ;------------------------------------------------------------
 	G$main$0$0 ==.
-	C$final.c$50$1$6 ==.
-;	C:\MPSfiles\Final\final.c:50: void main(void)
+	C$final.c$51$1$6 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:51: void main(void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-	C$final.c$52$1$12 ==.
-;	C:\MPSfiles\Final\final.c:52: Init_Device();
+	C$final.c$54$1$12 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:54: Init_Device(); //config files generated by Configuration Wizard
 	lcall	_Init_Device
-	C$final.c$53$1$12 ==.
-;	C:\MPSfiles\Final\final.c:53: state = 1;
-	mov	_state,#0x01
 	C$final.c$55$1$12 ==.
-;	C:\MPSfiles\Final\final.c:55: bit_array[0]=0xAA;
-	mov	_bit_array,#0xAA
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:55: state = 1; //initial state to use, will be
+	mov	_state,#0x01
 	C$final.c$56$1$12 ==.
-;	C:\MPSfiles\Final\final.c:56: bit_array[1]=0xA0;
-	mov	(_bit_array + 0x0001),#0xA0
-	C$final.c$57$1$12 ==.
-;	C:\MPSfiles\Final\final.c:57: total_bits=10;
-	mov	_total_bits,#0x0A
-	C$final.c$58$1$12 ==.
-;	C:\MPSfiles\Final\final.c:58: array_length = total_bits/8 +1;
-	mov	_array_length,#0x02
-	C$final.c$60$1$12 ==.
-;	C:\MPSfiles\Final\final.c:60: max_count = 10;
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:56: max_count = 10; //initial max_count to use
 	mov	_max_count,#0x0A
-	C$final.c$62$1$12 ==.
-;	C:\MPSfiles\Final\final.c:62: SFRPAGE = TMR2_PAGE;
+	C$final.c$58$1$12 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:58: SFRPAGE = TMR2_PAGE;//not necessary?
 	mov	_SFRPAGE,#0x00
-	C$final.c$63$1$12 ==.
-;	C:\MPSfiles\Final\final.c:63: while(1)
-00114$:
-	C$final.c$67$2$13 ==.
-;	C:\MPSfiles\Final\final.c:67: temp = 0xA6;
-	mov	_temp,#0xA6
-	C$final.c$69$2$13 ==.
-;	C:\MPSfiles\Final\final.c:69: for(i = 0; i <8;i++)
+	C$final.c$60$1$12 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:60: while(1) //main while loop
+00122$:
+	C$final.c$63$2$13 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:63: temp_bits = (unsigned int) header; //fill temp_bits with the header data;
+	mov	_main_temp_bits_1_12,_header
+	mov	(_main_temp_bits_1_12 + 1),(_header + 1)
+	mov	(_main_temp_bits_1_12 + 2),#0x00
+	mov	(_main_temp_bits_1_12 + 3),#0x00
+	C$final.c$64$2$13 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:64: for(i = 0; i<10;i++) //send the RFID header, non manchester encoded
+	mov	r2,#0x00
+	mov	r3,#0x00
+00124$:
+	C$final.c$66$3$14 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:66: next_state = temp_bits&0x01;
+	mov	a,#0x01
+	anl	a,_main_temp_bits_1_12
+	mov	r0,a
+	mov	r1,#0x00
 	mov	r6,#0x00
 	mov	r7,#0x00
-	mov	ar4,r6
-	mov	ar5,r7
-00116$:
-	C$final.c$71$3$14 ==.
-;	C:\MPSfiles\Final\final.c:71: next_state = (bit_array[0]>>i)&0x01;
-	mov	b,r4
-	inc	b
-	mov	a,_bit_array
-	sjmp	00165$
-00164$:
-	clr	c
-	rrc	a
-00165$:
-	djnz	b,00164$
-	anl	a,#0x01
-	mov	_next_state,a
-	C$final.c$72$3$14 ==.
-;	C:\MPSfiles\Final\final.c:72: ready = 0;
-	mov	_ready,#0x00
-	C$final.c$73$3$14 ==.
-;	C:\MPSfiles\Final\final.c:73: while(!ready);			
+	mov	_next_state,r0
+	C$final.c$67$3$14 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:67: ready = 0;
+;	1-genFromRTrack replaced	mov	_ready,#0x00
+	mov	_ready,r7
+	C$final.c$68$3$14 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:68: while(!ready);
 00101$:
 	mov	a,_ready
 	jz	00101$
-	C$final.c$69$2$13 ==.
-;	C:\MPSfiles\Final\final.c:69: for(i = 0; i <8;i++)
-	inc	r4
-	cjne	r4,#0x00,00167$
-	inc	r5
-00167$:
-	clr	c
-	mov	a,r4
-	subb	a,#0x08
-	mov	a,r5
-	subb	a,#0x00
-	jc	00116$
-	C$final.c$75$2$13 ==.
-;	C:\MPSfiles\Final\final.c:75: for(i = 0; i <8;i++)
-	mov	r6,#0x00
-	mov	r7,#0x00
-00118$:
-	C$final.c$77$3$15 ==.
-;	C:\MPSfiles\Final\final.c:77: next_state  = (bit_array[1]>>i)&0x01;
-	mov	b,r6
-	inc	b
-	mov	a,(_bit_array + 0x0001)
-	sjmp	00170$
-00169$:
+	C$final.c$69$3$14 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:69: temp_bits=temp_bits>>1;
+	mov	a,(_main_temp_bits_1_12 + 3)
 	clr	c
 	rrc	a
-00170$:
-	djnz	b,00169$
-	anl	a,#0x01
-	mov	_next_state,a
-	C$final.c$78$3$15 ==.
-;	C:\MPSfiles\Final\final.c:78: ready = 0;
-	mov	_ready,#0x00
-	C$final.c$79$3$15 ==.
-;	C:\MPSfiles\Final\final.c:79: while(!ready);			
-00105$:
-	mov	a,_ready
-	jz	00105$
-	C$final.c$75$2$13 ==.
-;	C:\MPSfiles\Final\final.c:75: for(i = 0; i <8;i++)
-	inc	r6
-	cjne	r6,#0x00,00172$
-	inc	r7
-00172$:
+	mov	(_main_temp_bits_1_12 + 3),a
+	mov	a,(_main_temp_bits_1_12 + 2)
+	rrc	a
+	mov	(_main_temp_bits_1_12 + 2),a
+	mov	a,(_main_temp_bits_1_12 + 1)
+	rrc	a
+	mov	(_main_temp_bits_1_12 + 1),a
+	mov	a,_main_temp_bits_1_12
+	rrc	a
+	mov	_main_temp_bits_1_12,a
+	C$final.c$64$2$13 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:64: for(i = 0; i<10;i++) //send the RFID header, non manchester encoded
+	inc	r2
+	cjne	r2,#0x00,00181$
+	inc	r3
+00181$:
 	clr	c
-	mov	a,r6
-	subb	a,#0x08
-	mov	a,r7
+	mov	a,r2
+	subb	a,#0x0A
+	mov	a,r3
 	subb	a,#0x00
-	jc	00118$
-	C$final.c$81$2$13 ==.
-;	C:\MPSfiles\Final\final.c:81: while(!ready);
+	jc	00124$
+	C$final.c$74$2$13 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:74: temp_bits = card_data; //load card data into temp_bits, temp bits is bitshifted once per loop to read individual bits at LSB
+	mov	_main_temp_bits_1_12,_card_data
+	mov	(_main_temp_bits_1_12 + 1),(_card_data + 1)
+	mov	(_main_temp_bits_1_12 + 2),(_card_data + 2)
+	mov	(_main_temp_bits_1_12 + 3),(_card_data + 3)
+	C$final.c$75$2$13 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:75: for(i = 0; i<31; i++) //send the 31 bits of the card data manchester encoded
+	mov	r6,#0x00
+	mov	r7,#0x00
+00126$:
+	C$final.c$77$3$15 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:77: bit_val = temp_bits&0x01;
+	mov	a,#0x01
+	anl	a,_main_temp_bits_1_12
+	mov	r2,a
+	mov	r3,#0x00
+	mov	r4,#0x00
+	mov	r5,#0x00
+	mov	_bit_val,r2
+	C$final.c$78$3$15 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:78: switch(bit_val)	//switch statment for manchester encoding
+	clr	a
+	cjne	a,_bit_val,00183$
+	sjmp	00105$
+00183$:
+	mov	a,#0x01
+	C$final.c$80$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:80: case(0):	//if bit_val is 0, send 1 then 0
+	cjne	a,_bit_val,00119$
+	sjmp	00112$
+00105$:
+	C$final.c$81$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:81: next_state = 1;
+	mov	_next_state,#0x01
+	C$final.c$82$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:82: ready = 0;
+	mov	_ready,#0x00
+	C$final.c$83$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:83: while(!ready);	//wait for timer2_isr to be ready for next_state
+00106$:
+	mov	a,_ready
+	jz	00106$
+	C$final.c$84$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:84: ready = 0;
+	mov	_ready,#0x00
+	C$final.c$85$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:85: next_state = 0;
+	mov	_next_state,#0x00
+	C$final.c$86$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:86: while(!ready);	//wait for timer2_isr to be ready for next_state
 00109$:
 	mov	a,_ready
-	jz	00109$
-	C$final.c$82$2$13 ==.
-;	C:\MPSfiles\Final\final.c:82: disable_transmission();
-	lcall	_disable_transmission
-	C$final.c$83$2$13 ==.
-;	C:\MPSfiles\Final\final.c:83: for(i = 0;i<3000; i++);
-	mov	r6,#0xB8
-	mov	r7,#0x0B
-00122$:
-	dec	r6
-	cjne	r6,#0xFF,00175$
-	dec	r7
-00175$:
+	jnz	00119$
+	C$final.c$88$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:88: case(1):	//if bit_val is 1, send 0 then 1
+	sjmp	00109$
+00112$:
+	C$final.c$89$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:89: next_state = 0;
+	mov	_next_state,#0x00
+	C$final.c$90$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:90: ready = 0;
+	mov	_ready,#0x00
+	C$final.c$91$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:91: while(!ready);	//wait for timer2_isr to be ready for next_state
+00113$:
+	mov	a,_ready
+	jz	00113$
+	C$final.c$92$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:92: next_state = 1;
+	mov	_next_state,#0x01
+	C$final.c$93$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:93: ready = 0;
+	mov	_ready,#0x00
+	C$final.c$94$4$16 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:94: while(!ready);
+00116$:
+	mov	a,_ready
+	jz	00116$
+	C$final.c$96$3$15 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:96: }
+00119$:
+	C$final.c$97$3$15 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:97: temp_bits = temp_bits>>1;	//shift temp_bits over by one so that next bit is in LSB position
+	mov	a,(_main_temp_bits_1_12 + 3)
+	clr	c
+	rrc	a
+	mov	(_main_temp_bits_1_12 + 3),a
+	mov	a,(_main_temp_bits_1_12 + 2)
+	rrc	a
+	mov	(_main_temp_bits_1_12 + 2),a
+	mov	a,(_main_temp_bits_1_12 + 1)
+	rrc	a
+	mov	(_main_temp_bits_1_12 + 1),a
+	mov	a,_main_temp_bits_1_12
+	rrc	a
+	mov	_main_temp_bits_1_12,a
+	C$final.c$75$2$13 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:75: for(i = 0; i<31; i++) //send the 31 bits of the card data manchester encoded
+	inc	r6
+	cjne	r6,#0x00,00189$
+	inc	r7
+00189$:
+	clr	c
 	mov	a,r6
-	orl	a,r7
-	jnz	00122$
-	C$final.c$84$2$13 ==.
-;	C:\MPSfiles\Final\final.c:84: enable_transmission();
-	lcall	_enable_transmission
-	sjmp	00114$
-	C$final.c$86$1$12 ==.
+	subb	a,#0x1F
+	mov	a,r7
+	subb	a,#0x00
+	jc	00126$
+	ljmp	00122$
+	C$final.c$103$1$12 ==.
 	XG$main$0$0 ==.
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer2_ISR'
 ;------------------------------------------------------------
 	G$timer2_ISR$0$0 ==.
-	C$final.c$89$1$12 ==.
-;	C:\MPSfiles\Final\final.c:89: void timer2_ISR(void) __interrupt 5
+	C$final.c$106$1$12 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:106: void timer2_ISR(void) __interrupt 5 //this is where the data is modulated for FSK
 ;	-----------------------------------------
 ;	 function timer2_ISR
 ;	-----------------------------------------
@@ -1635,92 +1688,89 @@ _timer2_ISR:
 	push	ar7
 	push	psw
 	mov	psw,#0x00
-	C$final.c$91$1$17 ==.
-;	C:\MPSfiles\Final\final.c:91: count ++;
+	C$final.c$108$1$18 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:108: count ++;	//increment the number of FSK cycles completed
 	inc	_count
-	C$final.c$92$1$17 ==.
-;	C:\MPSfiles\Final\final.c:92: if(count >= max_count)
+	C$final.c$109$1$18 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:109: if(count >= max_count)	//if the necessary number of FSK cycles is reached, prepare to send next bit
 	clr	c
 	mov	a,_count
 	subb	a,_max_count
 	jc	00108$
-	C$final.c$94$2$18 ==.
-;	C:\MPSfiles\Final\final.c:94: count = 0;
-	C$final.c$95$2$18 ==.
-;	C:\MPSfiles\Final\final.c:95: switch(next_state)
+	C$final.c$111$2$19 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:111: count = 0;	//reset number of FSK cycles
+	C$final.c$112$2$19 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:112: switch(next_state)	//timer2 timing and number of FSK cycles depends on next desired data transmission
 	clr	a
 	mov	_count,a
 	cjne	a,_next_state,00124$
 	sjmp	00101$
 00124$:
 	mov	a,#0x01
-	C$final.c$97$3$19 ==.
-;	C:\MPSfiles\Final\final.c:97: case(0):
+	C$final.c$114$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:114: case(0):	//if next bit is 0, set up timer2 for the correct FSK frequency and duration
 	cjne	a,_next_state,00106$
 	sjmp	00105$
 00101$:
-	C$final.c$98$3$19 ==.
-;	C:\MPSfiles\Final\final.c:98: state = 0;
+	C$final.c$115$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:115: state = 0;
 	mov	_state,#0x00
-	C$final.c$99$3$19 ==.
-;	C:\MPSfiles\Final\final.c:99: num_0 ++;
+	C$final.c$116$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:116: num_0 ++;	//increment number of 0's to enable balancing of 0 duration with 1 duration
 	inc	_num_0
-	C$final.c$100$3$19 ==.
-;	C:\MPSfiles\Final\final.c:100: switch(num_0%4)
+	C$final.c$117$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:117: switch(num_0%4)	//every 4th 0 needs to be a little longer so that average duration of FSK 0 is 50 RF cycles
 	mov	a,#0x03
 	anl	a,_num_0
 	mov	r7,a
 	cjne	r7,#0x01,00103$
-	C$final.c$103$4$20 ==.
-;	C:\MPSfiles\Final\final.c:103: max_count = 14;
+	C$final.c$120$4$21 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:120: max_count = 14;	//7 FSK cycles = 56 RF cycles
 	mov	_max_count,#0x0E
-	C$final.c$104$4$20 ==.
-;	C:\MPSfiles\Final\final.c:104: break;
-	C$final.c$105$4$20 ==.
-;	C:\MPSfiles\Final\final.c:105: default:
+	C$final.c$121$4$21 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:121: break;
+	C$final.c$122$4$21 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:122: default:
 	sjmp	00104$
 00103$:
-	C$final.c$106$4$20 ==.
-;	C:\MPSfiles\Final\final.c:106: max_count = 12;
+	C$final.c$123$4$21 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:123: max_count = 12;	//6 FSK cycles = 48 RF cycles
 	mov	_max_count,#0x0C
-	C$final.c$108$3$19 ==.
-;	C:\MPSfiles\Final\final.c:108: }
+	C$final.c$125$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:125: }										//56*1/4 + 48*3/4 = 50 RF cycles
 00104$:
-	C$final.c$109$3$19 ==.
-;	C:\MPSfiles\Final\final.c:109: RCAP2L = 0xF0;
+	C$final.c$126$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:126: RCAP2L = 0xF0;	//1 FSK cycle every 4 RF cycles
 	mov	_RCAP2L,#0xF0
-	C$final.c$110$3$19 ==.
-;	C:\MPSfiles\Final\final.c:110: break;
-	C$final.c$111$3$19 ==.
-;	C:\MPSfiles\Final\final.c:111: case(1):
+	C$final.c$127$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:127: break;
+	C$final.c$128$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:128: case(1):
 	sjmp	00106$
 00105$:
-	C$final.c$112$3$19 ==.
-;	C:\MPSfiles\Final\final.c:112: state = 1;
+	C$final.c$129$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:129: state = 1;
 	mov	_state,#0x01
-	C$final.c$113$3$19 ==.
-;	C:\MPSfiles\Final\final.c:113: max_count = 10;
+	C$final.c$130$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:130: max_count = 10;	//5 FSK cycles total = 50 RF cycles
 	mov	_max_count,#0x0A
-	C$final.c$114$3$19 ==.
-;	C:\MPSfiles\Final\final.c:114: RCAP2L = 0x2C;
+	C$final.c$131$3$20 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:131: RCAP2L = 0x2C;	//1 FSK cycle every 5 RF cycles
 	mov	_RCAP2L,#0x2C
-	C$final.c$116$2$18 ==.
-;	C:\MPSfiles\Final\final.c:116: }
+	C$final.c$133$2$19 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:133: }
 00106$:
-	C$final.c$118$2$18 ==.
-;	C:\MPSfiles\Final\final.c:118: ready = 1;
+	C$final.c$134$2$19 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:134: ready = 1;
 	mov	_ready,#0x01
 00108$:
-	C$final.c$120$1$17 ==.
-;	C:\MPSfiles\Final\final.c:120: P1 = state;
-	mov	_P1,_state
-	C$final.c$121$1$17 ==.
-;	C:\MPSfiles\Final\final.c:121: TF2 = 0;	
+	C$final.c$137$1$18 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:137: TF2 = 0;
 	clr	_TF2
 	pop	psw
 	pop	ar7
 	pop	acc
-	C$final.c$122$1$17 ==.
+	C$final.c$138$1$18 ==.
 	XG$timer2_ISR$0$0 ==.
 	reti
 ;	eliminated unneeded push/pop dpl
@@ -1732,31 +1782,31 @@ _timer2_ISR:
 ;SFR_PAGE_SAVE             Allocated to registers r7 
 ;------------------------------------------------------------
 	G$disable_transmission$0$0 ==.
-	C$final.c$124$1$17 ==.
-;	C:\MPSfiles\Final\final.c:124: void disable_transmission(void)
+	C$final.c$140$1$18 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:140: void disable_transmission(void)	//used to stop timer2 for when we aren't trying to emulate a card
 ;	-----------------------------------------
 ;	 function disable_transmission
 ;	-----------------------------------------
 _disable_transmission:
-	C$final.c$126$1$17 ==.
-;	C:\MPSfiles\Final\final.c:126: char SFR_PAGE_SAVE = SFRPAGE;
+	C$final.c$142$1$18 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:142: char SFR_PAGE_SAVE = SFRPAGE;
 	mov	r7,_SFRPAGE
-	C$final.c$127$1$22 ==.
-;	C:\MPSfiles\Final\final.c:127: SFRPAGE = TMR2_PAGE;
+	C$final.c$143$1$23 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:143: SFRPAGE = TMR2_PAGE;
 	mov	_SFRPAGE,#0x00
-	C$final.c$128$1$22 ==.
-;	C:\MPSfiles\Final\final.c:128: TMR2CN = 0x00;
+	C$final.c$144$1$23 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:144: TMR2CN = 0x00;
 	mov	_TMR2CN,#0x00
-	C$final.c$129$1$22 ==.
-;	C:\MPSfiles\Final\final.c:129: SFRPAGE = SFR_PAGE_SAVE;
+	C$final.c$145$1$23 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:145: SFRPAGE = SFR_PAGE_SAVE;
 	mov	_SFRPAGE,r7
-	C$final.c$130$1$22 ==.
-;	C:\MPSfiles\Final\final.c:130: P0 = 0;
+	C$final.c$146$1$23 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:146: P0 = 0;
 	mov	_P0,#0x00
-	C$final.c$131$1$22 ==.
-;	C:\MPSfiles\Final\final.c:131: P1 = 0;
+	C$final.c$147$1$23 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:147: P1 = 0;
 	mov	_P1,#0x00
-	C$final.c$132$1$22 ==.
+	C$final.c$148$1$23 ==.
 	XG$disable_transmission$0$0 ==.
 	ret
 ;------------------------------------------------------------
@@ -1765,25 +1815,25 @@ _disable_transmission:
 ;SFR_PAGE_SAVE             Allocated to registers r7 
 ;------------------------------------------------------------
 	G$enable_transmission$0$0 ==.
-	C$final.c$134$1$22 ==.
-;	C:\MPSfiles\Final\final.c:134: void enable_transmission(void)
+	C$final.c$150$1$23 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:150: void enable_transmission(void)	//used to restart timer2 and enable spoofing of a card
 ;	-----------------------------------------
 ;	 function enable_transmission
 ;	-----------------------------------------
 _enable_transmission:
-	C$final.c$136$1$22 ==.
-;	C:\MPSfiles\Final\final.c:136: char SFR_PAGE_SAVE = SFRPAGE;
+	C$final.c$152$1$23 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:152: char SFR_PAGE_SAVE = SFRPAGE;
 	mov	r7,_SFRPAGE
-	C$final.c$137$1$24 ==.
-;	C:\MPSfiles\Final\final.c:137: SFRPAGE = TMR2_PAGE;
+	C$final.c$153$1$25 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:153: SFRPAGE = TMR2_PAGE;
 	mov	_SFRPAGE,#0x00
-	C$final.c$138$1$24 ==.
-;	C:\MPSfiles\Final\final.c:138: TMR2CN = 0x04;
+	C$final.c$154$1$25 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:154: TMR2CN = 0x04;
 	mov	_TMR2CN,#0x04
-	C$final.c$139$1$24 ==.
-;	C:\MPSfiles\Final\final.c:139: SFRPAGE = SFR_PAGE_SAVE;
+	C$final.c$155$1$25 ==.
+;	C:\Users\Michael\Documents\GitHub\uamps\Firmware\final.c:155: SFRPAGE = SFR_PAGE_SAVE;
 	mov	_SFRPAGE,r7
-	C$final.c$140$1$24 ==.
+	C$final.c$156$1$25 ==.
 	XG$enable_transmission$0$0 ==.
 	ret
 	.area CSEG    (CODE)
